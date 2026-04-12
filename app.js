@@ -4,6 +4,11 @@ const LixeiraMovimento = require("./lixeiramovimento");
 const Lixeira = require("./lixeira");
 const db = require("./db");
 
+app.get("/teste", async function(req, res) 
+{
+        res.send("Teste de conexão! OK");
+})
+
 app.get("/lixeiramovimento", async function(req, res) 
 {
     const { codlixeira, porcentagem } = req.query;
