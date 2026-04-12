@@ -12,6 +12,4 @@ const Estado = db.sequelize.define('estado',
         }
     })
 
-    Estado.sequelize.sync({ force: false })
-
-    //module.exports = Estado;
+    module.exports = Estado;

@@ -10,10 +10,6 @@ const Pais = require("./pais");
 const Rua = require("./rua");
 const Usuario = require("./usuario");
 
-
-
-
-
 const db = require("./db");
 
 app.get("/teste", async function(req, res) 

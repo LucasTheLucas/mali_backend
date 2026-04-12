@@ -28,6 +28,4 @@ const Lixeira = db.sequelize.define('lixeira',
         }
     })
 
-Lixeira.sequelize.sync({ force: false })
-
-//module.exports = Lixeira;
+module.exports = Lixeira;

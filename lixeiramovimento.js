@@ -16,6 +16,4 @@ const LixeiraMovimento = db.sequelize.define('lixeiramovimento',
         }
     })
 
-        LixeiraMovimento.sequelize.sync({ force: false })
-
-//module.exports = LixeiraMovimento;
+module.exports = LixeiraMovimento;

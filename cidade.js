@@ -12,6 +12,4 @@ const Cidade = db.sequelize.define('cidade',
         }
     })
 
-    Cidade.sequelize.sync({ force: false })
-
-//module.exports = Cidade;
+module.exports = Cidade;

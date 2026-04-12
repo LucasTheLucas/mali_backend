@@ -20,6 +20,4 @@ const Coleta = db.sequelize.define('coleta',
         }
     })
 
-        Coleta.sequelize.sync({ force: false })
-
-//module.exports = Coleta;
+module.exports = Coleta;

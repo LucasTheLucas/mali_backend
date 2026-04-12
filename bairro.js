@@ -12,5 +12,4 @@ const Bairro = db.sequelize.define('bairro',
         }
     })
 
-    Bairro.sequelize.sync({ force: false })
-//module.exports = Bairro;
+module.exports = Bairro;

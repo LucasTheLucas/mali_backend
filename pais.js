@@ -8,6 +8,4 @@ const Pais = db.sequelize.define('pais',
         }
     })
 
-        Pais.sequelize.sync({ force: false })
-
-//module.exports = Pais;
+module.exports = Pais;
