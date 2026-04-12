@@ -2,6 +2,18 @@ const express = require('express')
 const app = express()
 const LixeiraMovimento = require("./lixeiramovimento");
 const Lixeira = require("./lixeira");
+const Bairro = require("./bairro");
+const Cidade = require("./cidade");
+const Coleta = require("./coleta");
+const Estado = require("./estado");
+const Pais = require("./pais");
+const Rua = require("./rua");
+const Usuario = require("./usuario");
+
+
+
+
+
 const db = require("./db");
 
 app.get("/teste", async function(req, res) 
