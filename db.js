@@ -1,9 +1,10 @@
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('mali', 'root', '123456789', 
+const sequelize = new Sequelize('mysql://root:NMVuCXlSzwfmBHMhYUEMhUoDjawlMwqv@metro.proxy.rlwy.net:23162/railway', 
     {
-        host: 'localhost',
-        dialect: 'mysql'
-    })
+    dialect: 'mysql',
+    logging: false 
+    }
+);
 
 
     module.exports = 

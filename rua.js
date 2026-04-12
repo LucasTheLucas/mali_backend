@@ -12,4 +12,6 @@ const Rua = db.sequelize.define('rua',
         }
     })
 
-module.exports = Rua;
+    Rua.sequelize.sync({ force: false })
+
+    //module.exports = Rua;
