@@ -67,7 +67,7 @@ app.post('/login', async (req, res) => {
     const { email, senha } = req.body;
 
     if (!email || !senha) {
-        return res.status(400).send("Usuário e senha são obrigatórios.");
+            res.status(401).json({status: "FALHA", mensagem: "Senha e email devem ser preenchidos!"});
     }
 
     try {
