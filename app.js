@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const crypto = require('crypto');
+
 const LixeiraMovimento = require("./lixeiramovimento");
 const Lixeira = require("./lixeira");
 const Bairro = require("./bairro");
@@ -11,6 +13,8 @@ const Rua = require("./rua");
 const Usuario = require("./usuario");
 
 const db = require("./db");
+
+app.use(express.json());
 
 app.get("/teste", async function(req, res) 
 {
@@ -65,4 +69,35 @@ app.get("/lixeirasmapa", async function(req, res)
     res.json(lixeiras);
 })
 
-app.listen(8082)
+app.post('/login', async (req, res) => {
+    const { email, senha } = req.body;
+
+    if (!email || !senha) {
+        return res.status(400).send("Usuário e senha são obrigatórios.");
+    }
+
+    try {
+        const hashMD5 = crypto.createHash('md5').update(senha).digest('hex');
+
+        const contas = await db.sequelize.query(
+            'SELECT email, senha FROM usuarios WHERE email = :emailSolicitado AND senha = :senhaHash',
+            {
+                replacements: { emailSolicitado: email, senhaHash: hashMD5 },
+                type: db.sequelize.QueryTypes.SELECT
+            }
+        );
+
+        if (contas.length > 0) {
+            console.log(contas[0].email)
+            res.status(200).json({status: "SUCESSO"});
+        } else {
+            res.status(401).json({status: "FALHA", mensagem: "Senha ou email incorreto!"});
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({status: "FALHA", mensagem: "Erro não catálogado"});
+    }
+});
+
+app.listen(8081)
