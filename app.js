@@ -63,12 +63,6 @@ app.get("/lixeirasmapa", async function(req, res) {
     }
 });
 
-app.get("/lixeirasmapa", async function(req, res)
-{
-    const lixeiras = await Lixeira.findAll();
-    res.json(lixeiras);
-})
-
 app.post('/login', async (req, res) => {
     const { email, senha } = req.body;
 
