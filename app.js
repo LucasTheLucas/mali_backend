@@ -74,7 +74,7 @@ app.post('/login', async (req, res) => {
         const hashMD5 = crypto.createHash('md5').update(senha).digest('hex');
 
         const contas = await db.sequelize.query(
-            'SELECT email, senha FROM usuarios WHERE email = :emailSolicitado AND senha = :senhaHash',
+            `SELECT email, senha FROM usuarios WHERE email = :emailSolicitado AND senha = :senhaHash AND ativo = 'T'`,
             {
                 replacements: { emailSolicitado: email, senhaHash: hashMD5 },
                 type: db.sequelize.QueryTypes.SELECT
