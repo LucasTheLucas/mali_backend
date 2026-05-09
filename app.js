@@ -95,10 +95,23 @@ app.post('/login', async (req, res) => {
     }
 });
 
-//ROTA PARA PEGAR OS CADSTROS DE FUNCIONÁRIOS
+//ROTA PARA PEGAR OS CADASTROS DE FUNCIONÁRIOS
 app.get("/usuarios", async function(req, res) {
     try {
-            const [usuarios] = await db.sequelize.query(`SELECT id, nome, email, funcao FROM usuarios WHERE ativo = 'T'`);
+            const [usuarios] = await db.sequelize.query(`
+                SELECT 
+                    id, 
+                    nome, 
+                    email, 
+                    CASE 
+                        WHEN funcao = 'M' THEN 'ACESSO MOTORISTA'  
+                        WHEN funcao = 'A' THEN 'ACESSO ADMINISTRATIVO'
+                        WHEN funcao = 'C' THEN 'ACESSO COMPLETO'
+                    END AS funcao,
+                    funcao AS tipofuncao
+                    
+                    FROM usuarios WHERE ativo = 'T'`
+            );
             res.status(200).json(usuarios);
         } catch (error) {console.error("Falha ao consultar usuarios:", error);}
 });
