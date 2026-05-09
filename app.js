@@ -81,7 +81,6 @@ app.post('/login', async (req, res) => {
             }
         );
         
-        res.status(200).json({status: "SUCESSO"});
         if (contas.length > 0) {
             console.log(contas[0].email)
             res.status(200).json({status: "SUCESSO"});
