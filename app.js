@@ -63,6 +63,7 @@ app.get("/lixeirasmapa", async function(req, res) {
     }
 });
 
+//ROTA DE LOGIN
 app.post('/login', async (req, res) => {
     const { email, senha } = req.body;
 
@@ -92,6 +93,14 @@ app.post('/login', async (req, res) => {
         console.error(error);
         res.status(500).json({status: "FALHA", mensagem: "Erro não catálogado"});
     }
+});
+
+//ROTA PARA PEGAR OS CADSTROS DE FUNCIONÁRIOS
+app.get("/usuarios", async function(req, res) {
+    try {
+            const [usuarios] = await db.sequelize.query(`SELECT id, nome, email, funcao FROM usuarios WHERE ativo = 'T'`);
+            res.status(200).json(usuarios);
+        } catch (error) {console.error("Falha ao consultar usuarios:", error);}
 });
 
 app.listen(8082)
