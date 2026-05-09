@@ -108,12 +108,18 @@ app.get("/usuarios", async function(req, res) {
                         WHEN funcao = 'A' THEN 'ACESSO ADMINISTRATIVO'
                         WHEN funcao = 'C' THEN 'ACESSO COMPLETO'
                     END AS funcao,
-                    funcao AS tipofuncao
-                    
+                    funcao AS tipofuncao,
+                    sexo,
+                    telefone
+
                     FROM usuarios WHERE ativo = 'T'`
             );
             res.status(200).json(usuarios);
         } catch (error) {console.error("Falha ao consultar usuarios:", error);}
+});
+
+app.post('/cadastrarfuncionario', async (req, res) => {
+    
 });
 
 app.listen(8082)
