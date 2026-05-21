@@ -122,4 +122,28 @@ app.post('/cadastrarfuncionario', async (req, res) => {
     
 });
 
+app.get("/movimento-lixeira/:codlixeira", async function(req, res) {
+    try {
+
+        const movimentos = await LixeiraMovimento.findAll({
+            where: {
+                codlixeira: req.params.codlixeira
+            },
+            order: [["data", "DESC"]]
+        });
+
+        res.status(200).json(movimentos);
+
+    } catch (error) {
+
+        console.error("Erro ao buscar movimentos:", error);
+
+        res.status(500).json({
+            status: "FALHA",
+            mensagem: "Erro ao buscar movimentos"
+        });
+
+    }
+});
+
 app.listen(8082)
