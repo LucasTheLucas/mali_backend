@@ -68,7 +68,7 @@ app.post('/login', async (req, res) => {
     const { email, senha } = req.body;
 
     if (!email || !senha) {
-            res.status(401).json({status: "FALHA", mensagem: "Senha e email devem ser preenchidos!"});
+            return res.status(401).json({status: "FALHA", mensagem: "Senha e email devem ser preenchidos!"});
     }
 
     try {
@@ -83,8 +83,8 @@ app.post('/login', async (req, res) => {
         );
         
         if (contas.length > 0) {
-            console.log(contas[0].email)
-            res.status(200).json({status: "SUCESSO", trocarsenha: contas.trocarsenha, id: contas.id});
+            const usuario = contas[0];
+            res.status(200).json({status: "SUCESSO", trocarsenha: usuario.trocarsenha, id: usuario.id});
         } else {
             res.status(401).json({status: "FALHA", mensagem: "Senha ou email incorreto!"});
         }
