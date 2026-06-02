@@ -129,11 +129,14 @@ app.post('/cadastrarfuncionario', async (req, res) => {
             });
         }
 
-        const novoFuncionario = await Funcionario.create({
-            nome,
-            email,
-            telefone,
-            funcao
+        const novoFuncionario = await Usuario.create({
+            nome: nome,
+            email: email,
+            telefone: telefone,
+            funcao: funcao,
+            ativo: 'T',
+            senha: 'e336b9c97042858882436f5466487739',
+            trocarsenha: 'T'
         });
 
         return res.status(201).json({
@@ -146,7 +149,7 @@ app.post('/cadastrarfuncionario', async (req, res) => {
         console.error("Erro ao cadastrar funcionário:", error);
         return res.status(500).json({
             status: "FALHA",
-            mensagem: "Erro interno no servidor ao cadastrar."
+            mensagem: "Erro interno no servidor."
         });
     }
 });
