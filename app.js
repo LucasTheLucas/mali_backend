@@ -135,7 +135,7 @@ app.post('/cadastrarfuncionario', async (req, res) => {
             telefone: telefone,
             funcao: funcao,
             ativo: 'T',
-            senha: 'e336b9c97042858882436f5466487739',
+            senha: '2359ade1bd4b44bd123cfca7bc853e33',
             trocarsenha: 'T'
         });
 
