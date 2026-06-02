@@ -119,7 +119,36 @@ app.get("/usuarios", async function(req, res) {
 });
 
 app.post('/cadastrarfuncionario', async (req, res) => {
-    
+    try {
+        const { nome, email, telefone, funcao } = req.body;
+
+        if (!nome || !email) {
+            return res.status(400).json({ 
+                status: "FALHA", 
+                mensagem: "Nome e Email são obrigatórios." 
+            });
+        }
+
+        const novoFuncionario = await Funcionario.create({
+            nome,
+            email,
+            telefone,
+            funcao
+        });
+
+        return res.status(201).json({
+            status: "SUCESSO",
+            mensagem: "Funcionário cadastrado com sucesso!",
+            dados: novoFuncionario
+        });
+
+    } catch (error) {
+        console.error("Erro ao cadastrar funcionário:", error);
+        return res.status(500).json({
+            status: "FALHA",
+            mensagem: "Erro interno no servidor ao cadastrar."
+        });
+    }
 });
 
 app.get("/movimento-lixeira/:codlixeira", async function(req, res) {
