@@ -75,7 +75,7 @@ app.post('/login', async (req, res) => {
         const hashMD5 = crypto.createHash('md5').update(senha).digest('hex');
 
         const contas = await db.sequelize.query(
-            `SELECT email, senha FROM usuarios WHERE email = :emailSolicitado AND senha = :senhaHash AND ativo = 'T'`,
+            `SELECT id, email, senha, trocarsenha FROM usuarios WHERE email = :emailSolicitado AND senha = :senhaHash AND ativo = 'T'`,
             {
                 replacements: { emailSolicitado: email, senhaHash: hashMD5 },
                 type: db.sequelize.QueryTypes.SELECT
@@ -84,7 +84,7 @@ app.post('/login', async (req, res) => {
         
         if (contas.length > 0) {
             console.log(contas[0].email)
-            res.status(200).json({status: "SUCESSO"});
+            res.status(200).json({status: "SUCESSO", trocarsenha: contas.trocarsenha, id: contas.id});
         } else {
             res.status(401).json({status: "FALHA", mensagem: "Senha ou email incorreto!"});
         }
