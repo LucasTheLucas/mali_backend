@@ -223,4 +223,47 @@ app.post('/trocarsenha', async (req, res) => {
     }
 });
 
+app.post('/resetarsenha', async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ 
+                status: "FALHA", 
+                mensagem: "Identificação e senha são obrigatórios" 
+            });
+        }
+
+        const resultado = await Usuario.update(
+            {
+                senha: '2359ade1bd4b44bd123cfca7bc853e33',
+                trocarsenha: 'T'
+            },
+            {
+                where: {
+                    id: id 
+                }
+            }
+        );
+
+        if (resultado[0] > 0) {
+            return res.status(201).json({
+            status: "SUCESSO",
+            mensagem: "Senha resetada com sucesso!",
+            });
+        } else {
+            return res.status(404).json({
+            status: "FALHA",
+            mensagem: "Houve um problema ao resetar a senha!",
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao resetar a senha!", error);
+        return res.status(500).json({
+            status: "FALHA",
+            mensagem: "Erro interno no servidor."
+        });
+    }
+});
+
 app.listen(8082)
