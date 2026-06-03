@@ -182,7 +182,7 @@ app.post('/trocarsenha', async (req, res) => {
     try {
         const { id, novaSenha } = req.body;
 
-        if (!id || !senha) {
+        if (!id || !novaSenha) {
             return res.status(400).json({ 
                 status: "FALHA", 
                 mensagem: "Identificação e senha são obrigatórios" 
