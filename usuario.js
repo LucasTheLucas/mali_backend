@@ -25,7 +25,11 @@ const Usuario = db.sequelize.define('usuario',
         funcao:
         {
             type: db.Sequelize.TEXT
-        }
+        },
+        trocarsenha:
+        {
+            type: db.Sequelize.TEXT
+        },
     })
 
 module.exports = Usuario;
