@@ -120,7 +120,7 @@ app.get("/usuarios", async function(req, res) {
 
 app.post('/cadastrarfuncionario', async (req, res) => {
     try {
-        const { nome, email, telefone, funcao } = req.body;
+        const { nome, email, telefone, funcao, genero } = req.body;
 
         if (!nome || !email) {
             return res.status(400).json({ 
@@ -136,7 +136,8 @@ app.post('/cadastrarfuncionario', async (req, res) => {
             funcao: funcao,
             ativo: 'T',
             senha: '2359ade1bd4b44bd123cfca7bc853e33',
-            trocarsenha: 'T'
+            trocarsenha: 'T',
+            sexo: genero
         });
 
         return res.status(201).json({
