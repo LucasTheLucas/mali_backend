@@ -178,4 +178,49 @@ app.get("/movimento-lixeira/:codlixeira", async function(req, res) {
     }
 });
 
+app.post('/trocarsenha', async (req, res) => {
+    try {
+        const { id, novaSenha } = req.body;
+
+        if (!id || !senha) {
+            return res.status(400).json({ 
+                status: "FALHA", 
+                mensagem: "Identificação e senha são obrigatórios" 
+            });
+        }
+
+        const hashMD5 = crypto.createHash('md5').update(novaSenha).digest('hex');
+
+        const resultado = await Usuario.update(
+            {
+                senha: hashMD5,
+                trocarsenha: 'F'
+            },
+            {
+                where: {
+                    id: id 
+                }
+            }
+        );
+
+        if (resultado[0] > 0) {
+            return res.status(201).json({
+            status: "SUCESSO",
+            mensagem: "Senha atualizada com sucesso!",
+            });
+        } else {
+            return res.status(404).json({
+            status: "FALHA",
+            mensagem: "Houve um problema ao salvar a senha!",
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar a senha!", error);
+        return res.status(500).json({
+            status: "FALHA",
+            mensagem: "Erro interno no servidor."
+        });
+    }
+});
+
 app.listen(8082)
