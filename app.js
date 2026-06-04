@@ -267,4 +267,46 @@ app.post('/resetarsenha', async (req, res) => {
     }
 });
 
+app.post('/inativarusuario', async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ 
+                status: "FALHA", 
+                mensagem: "Identificação é obrigatório" 
+            });
+        }
+
+        const resultado = await Usuario.update(
+            {
+                ativo: 'F'
+            },
+            {
+                where: {
+                    id: id 
+                }
+            }
+        );
+
+        if (resultado[0] > 0) {
+            return res.status(201).json({
+            status: "SUCESSO",
+            mensagem: "Usuário inativado com sucesso!",
+            });
+        } else {
+            return res.status(404).json({
+            status: "FALHA",
+            mensagem: "Houve um problema ao inativar o usuário!",
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao inativar usuário!", error);
+        return res.status(500).json({
+            status: "FALHA",
+            mensagem: "Erro interno no servidor."
+        });
+    }
+});
+
 app.listen(8082)
