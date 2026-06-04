@@ -30,6 +30,10 @@ const Usuario = db.sequelize.define('usuario',
         {
             type: db.Sequelize.TEXT
         },
+        ativo:
+        {
+            type: db.Sequelize.TEXT
+        },
     })
 
 module.exports = Usuario;
