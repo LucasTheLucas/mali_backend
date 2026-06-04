@@ -118,6 +118,7 @@ app.get("/usuarios", async function(req, res) {
         } catch (error) {console.error("Falha ao consultar usuarios:", error);}
 });
 
+//ROTA PARA CADASTRAR FUNCIONARIOS
 app.post('/cadastrarfuncionario', async (req, res) => {
     try {
         const { nome, email, telefone, funcao, genero } = req.body;
@@ -155,6 +156,7 @@ app.post('/cadastrarfuncionario', async (req, res) => {
     }
 });
 
+//ROTA PARA PEGAR OS MOVIMENTOS FEITOS PELA LIXEIRAS
 app.get("/movimento-lixeira/:codlixeira", async function(req, res) {
     try {
 
@@ -179,6 +181,7 @@ app.get("/movimento-lixeira/:codlixeira", async function(req, res) {
     }
 });
 
+//TROCAR SENHA DO USUÁRIO DEPOIS DE RESETADA OU PELA PRIMEIRA VEZ CADASTRADO
 app.post('/trocarsenha', async (req, res) => {
     try {
         const { id, novaSenha } = req.body;
@@ -224,6 +227,7 @@ app.post('/trocarsenha', async (req, res) => {
     }
 });
 
+//ROTA PARA RESETAR SENHA PARA A PADRÂO
 app.post('/resetarsenha', async (req, res) => {
     try {
         const { id } = req.body;
@@ -267,6 +271,7 @@ app.post('/resetarsenha', async (req, res) => {
     }
 });
 
+//ROTA PARA 'EXCLUIR' O USUARIO 
 app.post('/inativarusuario', async (req, res) => {
     try {
         const { id } = req.body;
@@ -302,6 +307,53 @@ app.post('/inativarusuario', async (req, res) => {
         }
     } catch (error) {
         console.error("Erro ao inativar usuário!", error);
+        return res.status(500).json({
+            status: "FALHA",
+            mensagem: "Erro interno no servidor."
+        });
+    }
+});
+
+//ROTA PARA ATUALIZAR USUÁRIO
+app.post('/atualizarusuario', async (req, res) => {
+    try {
+        const { id, nome, email, telefone, genero, funcao } = req.body;
+
+        if (!id || !nome || !email || !telefone || !genero || !funcao) {
+            return res.status(400).json({ 
+                status: "FALHA", 
+                mensagem: "Preencha todos os campos!" 
+            });
+        }
+
+        const resultado = await Usuario.update(
+            {
+                nome: nome,
+                email: email,
+                telefone: telefone,
+                sexo: genero,
+                funcao: funcao,
+            },
+            {
+                where: {
+                    id: id 
+                }
+            }
+        );
+
+        if (resultado[0] > 0) {
+            return res.status(201).json({
+            status: "SUCESSO",
+            mensagem: "Usuário alterado com sucesso!",
+            });
+        } else {
+            return res.status(404).json({
+            status: "FALHA",
+            mensagem: "Houve um problema ao alterar o usuário!",
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao alterar o usuário!", error);
         return res.status(500).json({
             status: "FALHA",
             mensagem: "Erro interno no servidor."
