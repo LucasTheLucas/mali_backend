@@ -103,12 +103,7 @@ app.get("/usuarios", async function(req, res) {
                     id, 
                     nome, 
                     email, 
-                    CASE 
-                        WHEN funcao = 'M' THEN 'ACESSO MOTORISTA'  
-                        WHEN funcao = 'A' THEN 'ACESSO ADMINISTRATIVO'
-                        WHEN funcao = 'C' THEN 'ACESSO COMPLETO'
-                    END AS funcao,
-                    funcao AS tipofuncao,
+                    funcao,
                     sexo,
                     telefone
 
