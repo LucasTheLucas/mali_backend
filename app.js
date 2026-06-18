@@ -357,7 +357,7 @@ app.post('/atualizarusuario', async (req, res) => {
 });
 
 
-router.get("/dashboard", async (req, res) => {
+app.get("/dashboard", async (req, res) => {
 
     try {
 
@@ -422,7 +422,7 @@ router.get("/dashboard", async (req, res) => {
 
 });
 
-router.get("/dashboard/evolucao", async (req, res) => {
+app.get("/dashboard/evolucao", async (req, res) => {
 
     try {
 
@@ -447,7 +447,7 @@ router.get("/dashboard/evolucao", async (req, res) => {
 
 });
 
-router.get("/dashboard/top-lixeiras", async (req, res) => {
+app.get("/dashboard/top-lixeiras", async (req, res) => {
 
     try {
 
@@ -478,7 +478,7 @@ router.get("/dashboard/top-lixeiras", async (req, res) => {
 
 });
 
-router.get("/dashboard/criticas", async (req, res) => {
+app.get("/dashboard/criticas", async (req, res) => {
 
     try {
 
@@ -516,7 +516,7 @@ router.get("/dashboard/criticas", async (req, res) => {
 
 });
 
-router.get("/dashboard/ultimas-leituras", async (req, res) => {
+app.get("/dashboard/ultimas-leituras", async (req, res) => {
 
     try {
 
@@ -546,7 +546,7 @@ router.get("/dashboard/ultimas-leituras", async (req, res) => {
 
 });
 
-router.get("/dashboard/tipos", async (req, res) => {
+app.get("/dashboard/tipos", async (req, res) => {
 
     try {
 
