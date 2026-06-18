@@ -361,17 +361,17 @@ app.get("/dashboard", async (req, res) => {
 
     try {
 
-        const totalLixeiras = await sequelize.query(`
+        const totalLixeiras = await db.query(`
             SELECT COUNT(*) total
             FROM lixeiras
         `);
 
-        const totalUsuarios = await sequelize.query(`
+        const totalUsuarios = await db.query(`
             SELECT COUNT(*) total
             FROM usuarios
         `);
 
-        const lixeirasCriticas = await sequelize.query(`
+        const lixeirasCriticas = await db.query(`
             SELECT COUNT(*) total
             FROM (
                 SELECT
@@ -387,7 +387,7 @@ app.get("/dashboard", async (req, res) => {
             AND porcentagem >= 80
         `);
 
-        const mediaOcupacao = await sequelize.query(`
+        const mediaOcupacao = await db.query(`
             SELECT
                 ROUND(AVG(porcentagem),0) media
             FROM (
@@ -426,7 +426,7 @@ app.get("/dashboard/evolucao", async (req, res) => {
 
     try {
 
-        const dados = await sequelize.query(`
+        const dados = await db.query(`
             SELECT
                 DATE(data) dia,
                 ROUND(AVG(porcentagem),0) media
@@ -451,7 +451,7 @@ app.get("/dashboard/top-lixeiras", async (req, res) => {
 
     try {
 
-        const dados = await sequelize.query(`
+        const dados = await db.query(`
             SELECT
                 l.id,
                 l.referencia,
@@ -482,7 +482,7 @@ app.get("/dashboard/criticas", async (req, res) => {
 
     try {
 
-        const dados = await sequelize.query(`
+        const dados = await db.query(`
             SELECT
                 l.id,
                 l.referencia,
@@ -520,7 +520,7 @@ app.get("/dashboard/ultimas-leituras", async (req, res) => {
 
     try {
 
-        const dados = await sequelize.query(`
+        const dados = await db.query(`
             SELECT
                 lm.id,
                 lm.data,
@@ -550,7 +550,7 @@ app.get("/dashboard/tipos", async (req, res) => {
 
     try {
 
-        const dados = await sequelize.query(`
+        const dados = await db.query(`
             SELECT
                 tipolixeira,
                 COUNT(*) quantidade
