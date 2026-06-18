@@ -356,4 +356,219 @@ app.post('/atualizarusuario', async (req, res) => {
     }
 });
 
+
+router.get("/dashboard", async (req, res) => {
+
+    try {
+
+        const totalLixeiras = await sequelize.query(`
+            SELECT COUNT(*) total
+            FROM lixeiras
+        `);
+
+        const totalUsuarios = await sequelize.query(`
+            SELECT COUNT(*) total
+            FROM usuarios
+        `);
+
+        const lixeirasCriticas = await sequelize.query(`
+            SELECT COUNT(*) total
+            FROM (
+                SELECT
+                    codlixeira,
+                    porcentagem,
+                    ROW_NUMBER() OVER(
+                        PARTITION BY codlixeira
+                        ORDER BY data DESC
+                    ) rnk
+                FROM lixeiramovimentos
+            ) x
+            WHERE rnk = 1
+            AND porcentagem >= 80
+        `);
+
+        const mediaOcupacao = await sequelize.query(`
+            SELECT
+                ROUND(AVG(porcentagem),0) media
+            FROM (
+                SELECT
+                    codlixeira,
+                    porcentagem,
+                    ROW_NUMBER() OVER(
+                        PARTITION BY codlixeira
+                        ORDER BY data DESC
+                    ) rnk
+                FROM lixeiramovimentos
+            ) x
+            WHERE rnk = 1
+        `);
+
+        res.json({
+            totalLixeiras: Number(totalLixeiras[0][0].total),
+            totalUsuarios: Number(totalUsuarios[0][0].total),
+            lixeirasCriticas: Number(lixeirasCriticas[0][0].total),
+            mediaOcupacao: Number(mediaOcupacao[0][0].media || 0)
+        });
+
+    } catch (erro) {
+
+        console.log(erro);
+
+        res.status(500).json({
+            erro: erro.message
+        });
+
+    }
+
+});
+
+router.get("/dashboard/evolucao", async (req, res) => {
+
+    try {
+
+        const dados = await sequelize.query(`
+            SELECT
+                DATE(data) dia,
+                ROUND(AVG(porcentagem),0) media
+            FROM lixeiramovimentos
+            GROUP BY DATE(data)
+            ORDER BY dia
+        `);
+
+        res.json(dados[0]);
+
+    } catch (erro) {
+
+        res.status(500).json({
+            erro: erro.message
+        });
+
+    }
+
+});
+
+router.get("/dashboard/top-lixeiras", async (req, res) => {
+
+    try {
+
+        const dados = await sequelize.query(`
+            SELECT
+                l.id,
+                l.referencia,
+                ROUND(AVG(lm.porcentagem),0) media
+            FROM lixeiras l
+            INNER JOIN lixeiramovimentos lm
+                ON lm.codlixeira = l.id
+            GROUP BY
+                l.id,
+                l.referencia
+            ORDER BY media DESC
+            LIMIT 10
+        `);
+
+        res.json(dados[0]);
+
+    } catch (erro) {
+
+        res.status(500).json({
+            erro: erro.message
+        });
+
+    }
+
+});
+
+router.get("/dashboard/criticas", async (req, res) => {
+
+    try {
+
+        const dados = await sequelize.query(`
+            SELECT
+                l.id,
+                l.referencia,
+                x.porcentagem
+            FROM lixeiras l
+            INNER JOIN (
+                SELECT
+                    codlixeira,
+                    porcentagem,
+                    ROW_NUMBER() OVER(
+                        PARTITION BY codlixeira
+                        ORDER BY data DESC
+                    ) rnk
+                FROM lixeiramovimentos
+            ) x
+                ON x.codlixeira = l.id
+            WHERE x.rnk = 1
+            AND x.porcentagem >= 80
+            ORDER BY x.porcentagem DESC
+        `);
+
+        res.json(dados[0]);
+
+    } catch (erro) {
+
+        res.status(500).json({
+            erro: erro.message
+        });
+
+    }
+
+});
+
+router.get("/dashboard/ultimas-leituras", async (req, res) => {
+
+    try {
+
+        const dados = await sequelize.query(`
+            SELECT
+                lm.id,
+                lm.data,
+                lm.porcentagem,
+                l.id codlixeira,
+                l.referencia
+            FROM lixeiramovimentos lm
+            INNER JOIN lixeiras l
+                ON l.id = lm.codlixeira
+            ORDER BY lm.data DESC
+            LIMIT 20
+        `);
+
+        res.json(dados[0]);
+
+    } catch (erro) {
+
+        res.status(500).json({
+            erro: erro.message
+        });
+
+    }
+
+});
+
+router.get("/dashboard/tipos", async (req, res) => {
+
+    try {
+
+        const dados = await sequelize.query(`
+            SELECT
+                tipolixeira,
+                COUNT(*) quantidade
+            FROM lixeiras
+            GROUP BY tipolixeira
+            ORDER BY quantidade DESC
+        `);
+
+        res.json(dados[0]);
+
+    } catch (erro) {
+
+        res.status(500).json({
+            erro: erro.message
+        });
+
+    }
+
+});
+
 app.listen(8082)
