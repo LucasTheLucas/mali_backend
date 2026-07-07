@@ -42,7 +42,8 @@ app.get("/lixeirasmapa", async function(req, res) {
                 coordenadax, 
                 coordenaday, 
                 porcentagem,
-                referencia
+                referencia,
+                ultima_data
             FROM (
                 SELECT 
                     l.id, 
@@ -50,6 +51,7 @@ app.get("/lixeirasmapa", async function(req, res) {
                     l.coordenaday, 
                     coalesce(lm.porcentagem, 0) as porcentagem,
                     l.referencia,
+                    lm.data as ultima_data,
                     ROW_NUMBER() OVER (PARTITION BY l.id ORDER BY lm.data DESC) as rnk
                 FROM lixeiras l
                 LEFT JOIN lixeiramovimentos lm ON l.id = lm.codlixeira
