@@ -84,7 +84,7 @@ app.post('/login', async (req, res) => {
         
         if (contas.length > 0) {
             const usuario = contas[0];
-            res.status(200).json({status: "SUCESSO", trocarsenha: usuario.trocarsenha, id: usuario.id});
+            res.status(200).json({status: "SUCESSO", trocarsenha: usuario.trocarsenha, id: usuario.id, funcao: usuario.funcao});
         } else {
             res.status(401).json({status: "FALHA", mensagem: "Senha ou email incorreto!"});
         }
