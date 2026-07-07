@@ -574,60 +574,62 @@ app.get("/dashboard/tipos", async (req, res) => {
 });
 
 // ROTA PARA CADASTRAR LIXEIRA
-app.post('/cadastrarlixeira', async (req, res) => {
-    
-    console.log(req.body);
-    
+app.post("/cadastrarlixeira", async (req, res) => {
+
     try {
 
         const {
-            tipolixeira,
             referencia,
-            numero,
-            codrua,
             coordenadax,
             coordenaday
         } = req.body;
 
+        // Validação
         if (
-            !tipolixeira ||
             !referencia ||
-            numero == null ||
-            codrua == null ||
             !coordenadax ||
             !coordenaday
         ) {
+
             return res.status(400).json({
                 status: "FALHA",
                 mensagem: "Preencha todos os campos."
             });
+
         }
 
         const novaLixeira = await Lixeira.create({
-            tipolixeira: 'C',
+
+            tipolixeira: "C",
             referencia: referencia,
             numero: 0,
             codrua: 0,
             coordenadax: coordenadax,
             coordenaday: coordenaday
+
         });
 
         return res.status(201).json({
+
             status: "SUCESSO",
             mensagem: "Lixeira cadastrada com sucesso!",
             dados: novaLixeira
+
         });
 
-    } catch (error) {
+    } catch (erro) {
 
-        console.error("Erro ao cadastrar lixeira:", error);
+        console.error("Erro ao cadastrar lixeira:", erro);
 
         return res.status(500).json({
+
             status: "FALHA",
-            mensagem: "Erro interno no servidor."
+            mensagem: "Erro interno no servidor.",
+            erro: erro.message
+
         });
 
     }
-});
 
+});
 app.listen(8082)
