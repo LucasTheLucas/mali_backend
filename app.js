@@ -575,6 +575,9 @@ app.get("/dashboard/tipos", async (req, res) => {
 
 // ROTA PARA CADASTRAR LIXEIRA
 app.post('/cadastrarlixeira', async (req, res) => {
+    
+    console.log(req.body);
+    
     try {
 
         const {
